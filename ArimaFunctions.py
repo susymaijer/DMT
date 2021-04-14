@@ -22,6 +22,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 
 
 perc_train = 0.8
+sns.set_style("darkgrid")
 
 def getPersonMoodArimaSet(df, person):
     """
@@ -70,13 +71,14 @@ def get_train_set_set(data, perc_train = perc_train):
     
     return data[0:train_size], data[train_size:].dropna()
 
-def perform_ARIMA(data, pdq_order, perc_train = perc_train):
+def perform_ARIMA(data, pdq_order, perc_train = perc_train, figureName=None):
     """
         Perform arima on some data with a specific order and the desired training set percentage.
  
         @param aray-like data           the data
         @param (int,int,int) pqd_order  the p,d,q order for arima
         @param float perc_train         the training set percentage
+        @param string figurePath        the path to save the figure of the results
         
     """
     
@@ -96,8 +98,13 @@ def perform_ARIMA(data, pdq_order, perc_train = perc_train):
     # Show observed values, fitted values, and forecasted values
     sns.lineplot(data=data)
     sns.lineplot(data=model_fit.fittedvalues, color='red') 
-    sns.lineplot(x=test.index, y=forecast, color='orange')
+    sns.lineplot(x=test.index, y=forecast, color='orange')    
+    
+    if figureName != None:
+        plt.savefig(f'figures/{figureName}.png', dpi=300)
+        
     plt.show()
+        
     
 def do_experiment_ARIMA_find_pdq_values(data, p_values, d_values, q_values, doPrint = True):
     """ 
