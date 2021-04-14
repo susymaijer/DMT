@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
+# In[1]:
 
 
 import pandas as pd
@@ -18,7 +18,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 
 # ### Arima functions
 
-# In[ ]:
+# In[4]:
 
 
 perc_train = 0.8
@@ -96,9 +96,11 @@ def perform_ARIMA(data, pdq_order, perc_train = perc_train, figureName=None):
     print(f'Test correct: {correct}')
 
     # Show observed values, fitted values, and forecasted values
-    sns.lineplot(data=data)
-    sns.lineplot(data=model_fit.fittedvalues, color='red') 
-    sns.lineplot(x=test.index, y=forecast, color='orange')    
+    sns.lineplot(data=data.rename(columns={"mood": "Observed"}), palette=['#000000'], lw=0.6)
+    sns.lineplot(data=model_fit.fittedvalues, dashes=True, label="Fitted") 
+    sns.lineplot(x=test.index, y=forecast, label="Forecast")  
+    plt.xlabel(f'Time')
+    plt.ylabel(f'Mood')
     
     if figureName != None:
         plt.savefig(f'figures/{figureName}.png', dpi=300)
